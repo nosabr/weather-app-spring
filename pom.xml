@@ -10,17 +10,18 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <spring.version>6.1.14</spring.version>
+        <spring.version>6.2.11</spring.version>
         <hibernate.version>6.6.4.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
         <!-- Spring Core -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
+            <version>6.2.11</version>
         </dependency>
 
         <dependency>
@@ -70,10 +71,11 @@
         </dependency>
 
         <!-- PostgreSQL Driver -->
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.4</version>
+            <version>42.7.8</version>
         </dependency>
 
         <!-- Connection Pool -->
@@ -169,6 +171,15 @@
             <artifactId>h2</artifactId>
             <version>2.3.232</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- SLF4J + Logback для логирования -->
+        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.21</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
