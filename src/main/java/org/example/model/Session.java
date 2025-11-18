@@ -18,17 +18,18 @@ import java.util.UUID;
 @Setter
 public class Session {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",  nullable = false)
     private UUID uuid;
 
     @ManyToOne
-    @JoinColumn(name = "userid", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "expiresAt")
+    @Column(name = "expires_at")
     private Instant expiresAt;
 
     public Session(User user, Instant expiresAt) {
+        this.uuid = UUID.randomUUID();
         this.user = user;
         this.expiresAt = expiresAt;
     }

@@ -24,7 +24,7 @@ public class Location {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "userid", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column( nullable = false,precision = 10,scale = 8)
