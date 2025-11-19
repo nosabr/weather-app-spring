@@ -16,10 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Session {
+public class UserSession {
     @Id
-    @Column(name = "id",  nullable = false)
-    private UUID uuid;
+    @Column(nullable = false)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -28,8 +28,8 @@ public class Session {
     @Column(name = "expires_at")
     private Instant expiresAt;
 
-    public Session(User user, Instant expiresAt) {
-        this.uuid = UUID.randomUUID();
+    public UserSession(User user, Instant expiresAt) {
+        this.id = UUID.randomUUID();
         this.user = user;
         this.expiresAt = expiresAt;
     }
@@ -38,19 +38,19 @@ public class Session {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Session session = (Session) o;
-        return Objects.equals(uuid, session.uuid);
+        UserSession userSession = (UserSession) o;
+        return Objects.equals(id, userSession.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "Session{" +
-                "uuid=" + uuid +
+        return "UserSession{" +
+                "id=" + id +
                 ", user=" + user +
                 ", expiresAt=" + expiresAt +
                 '}';
