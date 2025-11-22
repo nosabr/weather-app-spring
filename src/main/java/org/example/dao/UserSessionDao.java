@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional
@@ -32,7 +33,7 @@ public class UserSessionDao {
         getCurrentSession().persist(userSession);
     }
 
-    public Optional<UserSession> findById(Long id) {
+    public Optional<UserSession> findById(UUID id) {
         UserSession userSession = getCurrentSession().get(UserSession.class, id);
         if(userSession != null
                 && userSession.getExpiresAt().isBefore(Instant.now())) {

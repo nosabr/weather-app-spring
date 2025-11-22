@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Weather Viewer - Error</title>
@@ -10,9 +10,25 @@
 <body>
 
 <div class="container text-center mt-5">
-    <h1 class="display-4">Oops! Something Went Wrong</h1>
-    <p class="lead">We're sorry, but an unexpected error has occurred. Please try again later.</p>
-    <a class="btn btn-primary" href="#">Go to Home</a>
+    <h1 th:text="${errorCode}">404</h1>
+
+    <!-- Сообщение об ошибке -->
+    <h2 th:text="${errorMessage}">Страница не найдена</h2>
+
+    <!-- Дополнительная информация (опционально) -->
+    <p th:if="${requestUri}" th:text="'Запрашиваемый URL: ' + ${requestUri}"></p>
+
+    <!-- Кнопка возврата -->
+    <a th:href="@{/}" class="button">Вернуться на главную</a>
+
+    <!-- Для 404 - дополнительные ссылки -->
+    <div th:if="${errorCode == '404'}">
+        <p>Возможно, вы искали:</p>
+        <ul>
+            <li><a th:href="@{/}">Главная страница</a></li>
+            <li><a th:href="@{/login}">Вход</a></li>
+            <li><a th:href="@{/register}">Регистрация</a></li>
+        </ul>
 </div>
 
 </body>
