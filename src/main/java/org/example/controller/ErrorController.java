@@ -21,16 +21,13 @@ public class ErrorController {
             if (statusCode == 404) {
                 errorCode = "404";
                 errorMessage = "The requested resource was not found";
-            }
-            else if (statusCode == 500) {
+            } else if (statusCode == 500) {
                 errorCode = "500";
                 errorMessage = "Internal Server Error";
-            }
-            else if (statusCode == 403) {
+            } else if (statusCode == 403) {
                 errorCode = "403";
                 errorMessage = "Access Forbidden";
-            }
-            else {
+            } else {
                 errorCode = String.valueOf(statusCode);
             }
         }

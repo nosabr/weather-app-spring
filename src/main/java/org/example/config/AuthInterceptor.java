@@ -21,20 +21,20 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean  preHandle(HttpServletRequest request, HttpServletResponse response,
-                              Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                             Object handler) throws Exception {
         String path = request.getServletPath();
         System.out.println("[AuthInterceptor] Checking: " + path);
 
-        if(isUrlPublic(path)){
+        if (isUrlPublic(path)) {
             System.out.println("[AuthInterceptor] URL is public");
             return true;
         }
 
         User user = getCurrentUser(request);
-        if(user == null){
+        if (user == null) {
             System.out.println("[AuthInterceptor] User is null, redirect to login page");
-            response.sendRedirect("/sign-in");
+            response.sendRedirect(request.getContextPath() + "/sign-in");
             return false;
         }
 
@@ -44,24 +44,24 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private User getCurrentUser(HttpServletRequest request) {
-        Cookie[] cookies =  request.getCookies();
-        if(cookies == null){
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
             System.out.println("[AuthInterceptor] Cookies is null");
             return null;
         }
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("session_id")){
-                try{
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("session_id")) {
+                try {
                     UUID sessionId = UUID.fromString(cookie.getValue());
                     System.out.println("[AuthInterceptor] Cookie.getValue(): " + sessionId.toString());
                     User user = authService.getUserBySessionId(sessionId);
-                    if(user != null){
+                    if (user != null) {
                         System.out.println("[AuthInterceptor] User is already logged in");
                     } else {
                         System.out.println("[AuthInterceptor] User is not logged in");
                     }
                     return user;
-                } catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     System.out.println("[AuthInterceptor] Invalid session id");
                     return null;
                 }
@@ -71,7 +71,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private boolean isUrlPublic(String path) {
-        return path.equals("/") || path.equals("/sign-in")
-                || path.equals("/sign-up") ||  path.equals("/error");
+        return path.equals("/sign-in")
+                || path.equals("/sign-up") || path.equals("/error");
     }
 }
