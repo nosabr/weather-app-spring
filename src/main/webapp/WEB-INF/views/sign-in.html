@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head th:replace="~{fragments/common :: head('Вход')}"></head>
 <body>
 
@@ -13,12 +13,13 @@
                     <h2 class="text-center mb-4">Вход в систему</h2>
 
                     <!-- Сообщение об ошибке -->
+                    <!--/*@thymesVar id="error" type=""*/-->
                     <div th:if="${error}" class="alert alert-danger" role="alert">
                         <span th:text="${error}">Неверный логин или пароль</span>
                     </div>
 
                     <!-- Форма логина -->
-                    <form th:action="@{/login}" method="get">
+                    <form th:action="@{/sign-in}" method="post">
                         <div class="mb-3">
                             <label for="username" class="form-label">Логин</label>
                             <input type="text"
@@ -26,7 +27,6 @@
                                    id="username"
                                    name="username"
                                    placeholder="Введите логин"
-                                   th:value="${username}"
                                    required>
                         </div>
 
@@ -47,7 +47,7 @@
 
                     <div class="text-center mt-3">
                         <small class="text-muted">
-                            Нет аккаунта? <a th:href="@{/register}">Зарегистрироваться</a>
+                            Нет аккаунта? <a th:href="@{/sign-up}">Зарегистрироваться</a>
                         </small>
                     </div>
                 </div>
