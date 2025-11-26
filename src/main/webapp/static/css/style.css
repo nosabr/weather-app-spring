@@ -1,4 +1,4 @@
-/* Дополнительные стили */
+/* Основные стили приложения */
 body {
     display: flex;
     flex-direction: column;
@@ -9,6 +9,7 @@ main {
     flex: 1;
 }
 
+/* Header стили */
 .logo-img {
     height: 40px;
     width: auto;
@@ -20,9 +21,53 @@ main {
     align-items: center;
     font-size: 1.5rem;
     font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+}
+
+.navbar-brand:hover {
+    opacity: 0.8;
 }
 
 .navbar-user {
     position: absolute;
     right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.user-greeting {
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.user-greeting strong {
+    color: #0d6efd;
+    font-size: 1rem;
+}
+
+/* Footer стили */
+footer {
+    margin-top: auto;
+}
+
+/* Стили для карточек */
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+/* Стили для форм */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Дополнительные утилиты */
+.text-muted {
+    color: #6c757d !important;
 }

@@ -14,18 +14,19 @@
 
                     <!-- Сообщение об ошибке -->
                     <!--/*@thymesVar id="error" type=""*/-->
-                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <span th:text="${error}">Неверный логин или пароль</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
                     <!-- Форма логина -->
                     <form th:action="@{/sign-in}" method="post">
                         <div class="mb-3">
-                            <label for="username" class="form-label">Логин</label>
+                            <label for="login" class="form-label">Логин</label>
                             <input type="text"
                                    class="form-control"
-                                   id="username"
-                                   name="username"
+                                   id="login"
+                                   name="login"
                                    placeholder="Введите логин"
                                    required>
                         </div>

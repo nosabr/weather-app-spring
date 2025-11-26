@@ -25,4 +25,19 @@ public class AuthService {
         Optional<UserSession> session = userSessionDao.findById(sessionId);
         return session.map(UserSession::getUser).orElse(null);
     }
+
+    public User getUserByLoginAndPassword(String login, String password) {
+        Optional<User> optUser = userDao.findByLogin(login);
+        if (optUser.isPresent()) {
+            User user = optUser.get();
+            if (password.equals(user.getPassword())) {
+                System.out.println("[AuthService] User logged successfully");
+                return user;
+            }
+            System.out.println("[AuthService] Wrong password");
+            return null;
+        }
+        System.out.println("[AuthService] Wrong login");
+        return null;
+    }
 }
