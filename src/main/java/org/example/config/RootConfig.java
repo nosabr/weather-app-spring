@@ -1,5 +1,7 @@
 package org.example.config;
 
+import org.example.util.PasswordEncoder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -11,6 +13,8 @@ import org.springframework.context.annotation.Import;
 })
 @Import({PersistenceConfig.class})
 public class RootConfig {
-    // Главная конфигурация приложения
-    // Здесь регистрируются все бины кроме контроллеров
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new PasswordEncoder() {};
+    }
 }

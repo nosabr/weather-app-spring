@@ -3,8 +3,9 @@ package org.example.config;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.dao.UserSessionDao;
 import org.example.model.User;
-import org.example.service.AuthService;
+import org.example.service.UserSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -13,11 +14,11 @@ import java.util.UUID;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
-    private final AuthService authService;
+    private final UserSessionService userSessionService;
 
     @Autowired
-    public AuthInterceptor(AuthService authService) {
-        this.authService = authService;
+    public AuthInterceptor(UserSessionService userSessionService, UserSessionDao userSessionDao) {
+        this.userSessionService = userSessionService;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 try {
                     UUID sessionId = UUID.fromString(cookie.getValue());
                     System.out.println("[AuthInterceptor] Cookie.getValue(): " + sessionId.toString());
-                    User user = authService.getUserBySessionId(sessionId);
+                    User user = userSessionService.getUserBySessionId(sessionId);
                     if (user != null) {
                         System.out.println("[AuthInterceptor] User is already logged in");
                     } else {
@@ -71,7 +72,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private boolean isUrlPublic(String path) {
-        return path.equals("/sign-in")
+        return path.equals("/sign-in") || path.equals("/test")
                 || path.equals("/sign-up") || path.equals("/error");
     }
 }

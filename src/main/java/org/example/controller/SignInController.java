@@ -35,7 +35,7 @@ public class SignInController {
                          HttpSession session,
                          Model model) {
 
-        User user = authService.getUserByLoginAndPassword(login, password);
+        User user = authService.authenticate(login, password);
         if(user != null) {
             session.setAttribute("user", user);
             return "redirect:/";
@@ -44,7 +44,4 @@ public class SignInController {
         return "sign-in";
     }
 
-    private boolean isValidUser(String username, String password) {
-        return true;
-    }
 }

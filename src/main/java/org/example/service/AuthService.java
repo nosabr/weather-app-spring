@@ -4,6 +4,8 @@ import org.example.dao.UserDao;
 import org.example.dao.UserSessionDao;
 import org.example.model.User;
 import org.example.model.UserSession;
+import org.example.util.PasswordEncoder;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +16,28 @@ import java.util.UUID;
 public class AuthService {
     private final UserSessionDao userSessionDao;
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthService(UserSessionDao userSessionDao, UserDao userDao) {
+    public AuthService(UserSessionDao userSessionDao, UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userSessionDao = userSessionDao;
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
+
+
 
     public User getUserBySessionId(UUID sessionId) {
         Optional<UserSession> session = userSessionDao.findById(sessionId);
         return session.map(UserSession::getUser).orElse(null);
     }
 
-    public User getUserByLoginAndPassword(String login, String password) {
+
+    public User authenticate(String login, String password) {
         Optional<User> optUser = userDao.findByLogin(login);
         if (optUser.isPresent()) {
             User user = optUser.get();
-            if (password.equals(user.getPassword())) {
+            if (passwordEncoder.check(password, user.getPassword())) {
                 System.out.println("[AuthService] User logged successfully");
                 return user;
             }
