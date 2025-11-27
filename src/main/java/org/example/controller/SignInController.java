@@ -21,25 +21,26 @@ public class SignInController {
     }
 
     @GetMapping("/sign-in")
-    public String signIn(@RequestParam(required = false) String error, Model model) {
+    public String getSignInPage(@RequestParam(required = false) String error, Model model) {
         if(error != null) {
             model.addAttribute("error", "Неверный логин или пароль");
-        }
+            System.out.println("[SignInController] Wrong login or password");
+        }   
         return "sign-in";
     }
 
     @PostMapping("/sign-in")
-    public String signIn(@RequestParam("login") String login,
+    public String processLogin(@RequestParam("login") String login,
                          @RequestParam("password") String password,
                          HttpSession session,
-                         RedirectAttributes redirectAttributes) {
+                         Model model) {
 
         User user = authService.getUserByLoginAndPassword(login, password);
         if(user != null) {
             session.setAttribute("user", user);
             return "redirect:/";
         }
-        redirectAttributes.addAttribute("error", true);
+        model.addAttribute("error", "Неверный логин или пароль");
         return "sign-in";
     }
 
