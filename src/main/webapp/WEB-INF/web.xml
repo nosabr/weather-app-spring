@@ -22,4 +22,10 @@
         <location>/error</location>
     </error-page>
 
+    <!-- Обработка всех Java исключений -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error</location>
+    </error-page>
+
 </web-app>
