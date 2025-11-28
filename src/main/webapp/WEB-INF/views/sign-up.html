@@ -1,46 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Weather Viewer – Sign Up</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments/common :: head('Регистрация')}"></head>
 <body>
 
-<div class="container">
+<div th:replace="~{fragments/common :: header}"></div>
+
+<main class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-6">
-            <div class="weather-logo"></div>
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">Регистрация</h2>
+
+                    <!-- Сообщение об ошибке -->
+                    <!--/*@thymesVar id="error" type=""*/-->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span th:text="${error}">Ошибка регистрации</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Форма регистрации -->
+                    <form th:action="@{/sign-up}" method="post" id="signUpForm">
+                        <div class="mb-3">
+                            <label for="login" class="form-label">Логин</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="login"
+                                   name="login"
+                                   placeholder="Введите логин"
+                                   pattern="[A-Za-z0-9]{6,}"
+                                   title="Только латинские буквы и цифры, минимум 6 символов"
+                                   required>
+                            <div class="form-text">Только латинские буквы и цифры, минимум 6 символов</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="password"
+                                   name="password"
+                                   placeholder="Введите пароль"
+                                   pattern="[A-Za-z0-9]{6,}"
+                                   title="Только латинские буквы и цифры, минимум 6 символов"
+                                   required>
+                            <div class="form-text">Только латинские буквы и цифры, минимум 6 символов</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Подтвердите пароль</label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="confirmPassword"
+                                   name="confirmPassword"
+                                   placeholder="Повторите пароль"
+                                   required>
+                            <div id="passwordMatchError" class="text-danger mt-1" style="display: none; font-size: 0.875rem;">
+                                Пароли не совпадают
+                            </div>
+                        </div>
+
+                        <!-- Ссылка показать/скрыть пароль -->
+                        <div class="mb-4">
+                            <a href="#" id="togglePassword" class="text-decoration-none" style="font-size: 0.9rem;">
+                                <span id="toggleText">Показать пароль</span>
+                            </a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            Зарегистрироваться
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            Уже есть аккаунт? <a th:href="@{/sign-in}">Войти</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</main>
 
-    <h2 class="text-center mb-5">Sign Up</h2>
+<div th:replace="~{fragments/common :: footer}"></div>
+<div th:replace="~{fragments/common :: scripts}"></div>
 
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-4 col-md-6 col-sm-12">
-            <form action="#" class="mt-4">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required value=""/>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required value=""/>
-                </div>
-                <div class="mb-3">
-                    <label for="repeat-password" class="form-label">Repeat password</label>
-                    <input type="password" class="form-control" id="repeat-password" name="password" required value=""/>
-                </div>
+<script>
+    // Переключение видимости обоих паролей
+    document.getElementById('togglePassword').addEventListener('click', function(e) {
+        e.preventDefault();
 
-                <input type="hidden" name="redirect_to" value="http://localhost/"/>
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const toggleText = document.getElementById('toggleText');
 
-                <button type="submit" class="btn btn-primary w-100 mt-3">Sign Up</button>
-                <p class="mt-2 text-center">Already have an account? <a href="#">Sign in here</a></p>
-            </form>
-        </div>
-    </div>
-</div>
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            confirmPasswordInput.type = 'text';
+            toggleText.textContent = 'Скрыть пароль';
+        } else {
+            passwordInput.type = 'password';
+            confirmPasswordInput.type = 'password';
+            toggleText.textContent = 'Показать пароль';
+        }
+    });
+
+    // Проверка совпадения паролей
+    const form = document.getElementById('signUpForm');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const passwordMatchError = document.getElementById('passwordMatchError');
+
+    function checkPasswordMatch() {
+        if (confirmPassword.value && password.value !== confirmPassword.value) {
+            passwordMatchError.style.display = 'block';
+            confirmPassword.setCustomValidity('Пароли не совпадают');
+        } else {
+            passwordMatchError.style.display = 'none';
+            confirmPassword.setCustomValidity('');
+        }
+    }
+
+    password.addEventListener('input', checkPasswordMatch);
+    confirmPassword.addEventListener('input', checkPasswordMatch);
+
+    form.addEventListener('submit', function(e) {
+        checkPasswordMatch();
+        if (password.value !== confirmPassword.value) {
+            e.preventDefault();
+        }
+    });
+</script>
 
 </body>
 </html>
