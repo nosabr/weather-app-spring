@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.model.User;
 import org.example.model.UserSession;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,8 +30,9 @@ public class UserSessionDao {
         return sessionFactory.openSession();
     }
 
-    public void save(UserSession userSession) {
+    public UserSession save(UserSession userSession) {
         getCurrentSession().persist(userSession);
+        return userSession;
     }
 
     public Optional<UserSession> findById(UUID id) {

@@ -6,12 +6,15 @@ import org.example.model.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserSessionService {
     private final UserSessionDao userSessionDao;
+    private static final long SESSION_DURATION_HOURS = 1;
+
     @Autowired
     public UserSessionService(UserSessionDao userSessionDao) {
         this.userSessionDao = userSessionDao;
@@ -21,4 +24,12 @@ public class UserSessionService {
         Optional<UserSession> session = userSessionDao.findById(sessionId);
         return session.map(UserSession::getUser).orElse(null);
     }
+
+    public UserSession createUserSession(User user) {
+        UUID uuid = UUID.randomUUID();
+        UserSession userSession = new UserSession(user, Instant.now().
+                plusSeconds(SESSION_DURATION_HOURS * 3600));
+        return userSessionDao.save(userSession);
+    }
+
 }

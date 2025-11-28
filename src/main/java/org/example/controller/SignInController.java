@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.dto.AuthResultDTO;
 import org.example.model.User;
 import org.example.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.UUID;
 
 @Controller
 public class SignInController {
@@ -22,10 +25,6 @@ public class SignInController {
 
     @GetMapping("/sign-in")
     public String getSignInPage(@RequestParam(required = false) String error, Model model) {
-        if(error != null) {
-            model.addAttribute("error", "Неверный логин или пароль");
-            System.out.println("[SignInController] Wrong login or password");
-        }   
         return "sign-in";
     }
 
@@ -34,13 +33,12 @@ public class SignInController {
                          @RequestParam("password") String password,
                          HttpSession session,
                          Model model) {
+        AuthResultDTO authResultDTO = authService.authenticate(login, password);
+        if(authResultDTO.getUser() != null) {
 
-        User user = authService.authenticate(login, password);
-        if(user != null) {
-            session.setAttribute("user", user);
             return "redirect:/";
         }
-        model.addAttribute("error", "Неверный логин или пароль");
+        model.addAttribute("error", authResultDTO.getAuthError().getMessage());
         return "sign-in";
     }
 

@@ -2,6 +2,8 @@ package org.example.service;
 
 import org.example.dao.UserDao;
 import org.example.dao.UserSessionDao;
+import org.example.dto.AuthError;
+import org.example.dto.AuthResultDTO;
 import org.example.model.User;
 import org.example.model.UserSession;
 import org.example.util.PasswordEncoder;
@@ -25,26 +27,24 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
-
     public User getUserBySessionId(UUID sessionId) {
         Optional<UserSession> session = userSessionDao.findById(sessionId);
         return session.map(UserSession::getUser).orElse(null);
     }
 
 
-    public User authenticate(String login, String password) {
+    public AuthResultDTO authenticate(String login, String password) {
         Optional<User> optUser = userDao.findByLogin(login);
         if (optUser.isPresent()) {
             User user = optUser.get();
             if (passwordEncoder.check(password, user.getPassword())) {
                 System.out.println("[AuthService] User logged successfully");
-                return user;
+                return AuthResultDTO.success(user);
             }
             System.out.println("[AuthService] Wrong password");
-            return null;
+            return AuthResultDTO.failure(AuthError.WRONG_PASSWORD);
         }
-        System.out.println("[AuthService] Wrong login");
-        return null;
+        System.out.println("[AuthService] User doesn't exist");
+        return AuthResultDTO.failure(AuthError.USER_NOT_FOUND);
     }
 }
