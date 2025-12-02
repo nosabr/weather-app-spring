@@ -108,8 +108,8 @@ class RegistrationServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     @DisplayName("✅ Разные хеши для одинаковых паролей")
     void testDifferentHashes() {
-        RegistrationResultDTO r1 = registrationService.register("user1", "samePassword");
-        RegistrationResultDTO r2 = registrationService.register("user2", "samePassword");
+        RegistrationResultDTO r1 = registrationService.register("login1", "samePassword");
+        RegistrationResultDTO r2 = registrationService.register("login2", "samePassword");
         assertThat(r1.getUser().getPassword()).isNotEqualTo(r2.getUser().getPassword());
     }
 
@@ -117,7 +117,7 @@ class RegistrationServiceIntegrationTest extends BaseIntegrationTest {
     @DisplayName("✅ Множественная регистрация")
     void testMultipleUsers() {
         for (int i = 1; i <= 5; i++) {
-            RegistrationResultDTO result = registrationService.register("user" + i, "password123");
+            RegistrationResultDTO result = registrationService.register("login1" + i, "password123");
             assertThat(result.isSuccess()).isTrue();
         }
     }
