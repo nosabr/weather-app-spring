@@ -27,11 +27,12 @@ public class UserSessionDao {
     }
 
     private Session getCurrentSession() {
-        return sessionFactory.openSession();
+        return sessionFactory.getCurrentSession();
     }
 
     public UserSession save(UserSession userSession) {
         getCurrentSession().persist(userSession);
+        System.out.println("[UserSessionDao] UserSession saved");
         return userSession;
     }
 

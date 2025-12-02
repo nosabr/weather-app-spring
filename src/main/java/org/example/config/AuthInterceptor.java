@@ -31,7 +31,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             System.out.println("[AuthInterceptor] URL is public");
             return true;
         }
-
         User user = getCurrentUser(request);
         if (user == null) {
             System.out.println("[AuthInterceptor] User is null, redirect to login page");

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class SignUpController {
@@ -30,7 +31,8 @@ public class SignUpController {
     public String postSignUpPage(@RequestParam("login") String login,
                                  @RequestParam("password") String password,
                                  @RequestParam("confirmPassword") String confirmPassword,
-                                 Model model){
+                                 Model model,
+                                 RedirectAttributes redirectAttributes){
         if(!isValidLogin(login)){
             model.addAttribute("error", "Login is empty");
             return "sign-up";
@@ -44,7 +46,7 @@ public class SignUpController {
             model.addAttribute("error", registrationResultDTO.getRegistrationError().getMessage());
             return "sign-up";
         }
-
+        redirectAttributes.addFlashAttribute("registrationSuccess", true);
         return "redirect:sign-in";
     }
     private boolean isValidLogin(String login){

@@ -26,10 +26,10 @@ public class UserSessionService {
     }
 
     public UserSession createUserSession(User user) {
-        UUID uuid = UUID.randomUUID();
         Instant expiresAt = Instant.now().plusSeconds(SESSION_DURATION_HOURS * 3600);
-        UserSession userSession = new UserSession(user, expiresAt);
-        return userSessionDao.save(userSession);
+        UserSession userSession = userSessionDao.save(new UserSession(user, expiresAt));
+        System.out.println("[UserSessionService] UserSession created]");
+        return userSession;
     }
 
 }
