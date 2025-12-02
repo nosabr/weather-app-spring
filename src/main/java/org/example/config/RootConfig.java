@@ -9,12 +9,9 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan(basePackages = {
         "org.example.service",
-        "org.example.dao"
+        "org.example.dao",
+        "org.example.util"
 })
 @Import({PersistenceConfig.class})
 public class RootConfig {
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new PasswordEncoder() {};
-    }
 }

@@ -2,7 +2,9 @@ package org.example.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PasswordEncoder {
     private final int workFactor;
     public PasswordEncoder() {

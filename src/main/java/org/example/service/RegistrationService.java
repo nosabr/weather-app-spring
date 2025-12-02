@@ -15,13 +15,11 @@ public class RegistrationService {
     private static final String LOGIN_FORMAT = "^[A-Za-z0-9]{6,}$";
     private static final String PASSWORD_FORMAT = "^.{6,}$";
 
-    private final UserSessionDao userSessionDao;
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationService(UserSessionDao userSessionDao, UserDao userDao, PasswordEncoder passwordEncoder) {
-        this.userSessionDao = userSessionDao;
+    public RegistrationService(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
     }

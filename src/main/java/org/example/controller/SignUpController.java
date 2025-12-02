@@ -18,7 +18,7 @@ public class SignUpController {
     RegistrationService registrationService;
 
     @Autowired
-    public SignUpController(RegistrationService registrationService, UserDao userDao) {
+    public SignUpController(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
 
@@ -47,7 +47,7 @@ public class SignUpController {
             return "sign-up";
         }
         redirectAttributes.addFlashAttribute("registrationSuccess", true);
-        return "redirect:sign-in";
+        return "redirect:/sign-in";
     }
     private boolean isValidLogin(String login){
         return login != null && !login.isEmpty();

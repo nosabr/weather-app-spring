@@ -16,22 +16,14 @@ import java.util.UUID;
 
 @Service
 public class AuthService {
-    private final UserSessionDao userSessionDao;
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthService(UserSessionDao userSessionDao, UserDao userDao, PasswordEncoder passwordEncoder) {
-        this.userSessionDao = userSessionDao;
+    public AuthService(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
     }
-
-    public User getUserBySessionId(UUID sessionId) {
-        Optional<UserSession> session = userSessionDao.findById(sessionId);
-        return session.map(UserSession::getUser).orElse(null);
-    }
-
 
     public AuthResultDTO authenticate(String login, String password) {
         Optional<User> optUser = userDao.findByLogin(login);
