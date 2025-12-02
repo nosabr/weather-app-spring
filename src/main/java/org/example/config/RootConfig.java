@@ -12,6 +12,6 @@ import org.springframework.context.annotation.Import;
         "org.example.dao",
         "org.example.util"
 })
-@Import({PersistenceConfig.class})
+@Import({AppConfig.class})
 public class RootConfig {
 }

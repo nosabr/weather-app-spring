@@ -33,26 +33,12 @@ public class SignUpController {
                                  @RequestParam("confirmPassword") String confirmPassword,
                                  Model model,
                                  RedirectAttributes redirectAttributes){
-        if(!isValidLogin(login)){
-            model.addAttribute("error", "Login is empty");
-            return "sign-up";
-        }
-        if(!isValidPassword(password, confirmPassword)){
-            model.addAttribute("error", "Invalid Password");
-            return "sign-up";
-        }
         RegistrationResultDTO registrationResultDTO = registrationService.register(login,password);
-        if(registrationResultDTO.getUser() == null){
-            model.addAttribute("error", registrationResultDTO.getRegistrationError().getMessage());
-            return "sign-up";
+        if(registrationResultDTO.isSuccess()){
+            redirectAttributes.addFlashAttribute("registrationSuccess", true);
+            return "redirect:/sign-in";
         }
-        redirectAttributes.addFlashAttribute("registrationSuccess", true);
-        return "redirect:/sign-in";
-    }
-    private boolean isValidLogin(String login){
-        return login != null && !login.isEmpty();
-    }
-    private boolean isValidPassword(String password, String confirmPassword){
-        return password != null && !password.isEmpty() &&  password.equals(confirmPassword);
+        model.addAttribute("error", registrationResultDTO.getRegistrationError().getMessage());
+        return "sign-up";
     }
 }

@@ -26,16 +26,20 @@ public class RegistrationService {
 
     public RegistrationResultDTO register(String login, String password) {
         if(!isLoginValid(login)) {
+            System.out.println("[RegisterService] Invalid Login");
             return RegistrationResultDTO.failure(RegistrationError.INVALID_LOGIN_FORMAT);
         }
         if(!isPasswordValid(password)) {
+            System.out.println("[RegisterService] Invalid Password");
             return  RegistrationResultDTO.failure(RegistrationError.INVALID_PASSWORD_FORMAT);
         }
         if(isLoginTaken(login)) {
+            System.out.println("[RegisterService] Login is taken");
             return  RegistrationResultDTO.failure(RegistrationError.LOGIN_IS_TAKEN);
         }
         String hashedPassword = passwordEncoder.encode(password);
         User user = userDao.save(new User(login,hashedPassword));
+        System.out.println("[RegisterService] Successfully registered user");
         return   RegistrationResultDTO.success(user);
     }
 
@@ -44,10 +48,10 @@ public class RegistrationService {
     }
 
     private boolean isLoginValid(String login){
-        return login.matches(LOGIN_FORMAT);
+        return login != null && !login.isEmpty() && login.matches(LOGIN_FORMAT);
     }
 
     private boolean isPasswordValid(String password){
-        return password.matches(PASSWORD_FORMAT);
+        return password != null && !password.isEmpty() && password.matches(PASSWORD_FORMAT);
     }
 }

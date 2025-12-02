@@ -40,7 +40,7 @@ public class SignInController {
                          HttpServletResponse response,
                          Model model) {
         AuthResultDTO authResultDTO = authService.authenticate(login, password);
-        if(authResultDTO.getUser() != null) {
+        if(authResultDTO.isSuccess()) {
             UserSession userSession = userSessionService.createUserSession(authResultDTO.getUser());
             response.addCookie(createCookie("login", userSession.getUser().getLogin()));
             response.addCookie(createCookie("session_id", userSession.getId().toString()));
