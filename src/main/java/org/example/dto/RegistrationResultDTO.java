@@ -5,18 +5,20 @@ import org.example.model.User;
 
 @Getter
 public class RegistrationResultDTO {
+    private final boolean isSuccess;
     private final User user;
     private final RegistrationError registrationError;
 
-    private RegistrationResultDTO(User user, RegistrationError registrationError) {
+    private RegistrationResultDTO(boolean isSuccess,User user, RegistrationError registrationError) {
+        this.isSuccess = isSuccess;
         this.user = user;
         this.registrationError = registrationError;
     }
 
     public static RegistrationResultDTO success(User user){
-        return new RegistrationResultDTO(user, null);
+        return new RegistrationResultDTO(true, user, null);
     }
     public static RegistrationResultDTO failure(RegistrationError registrationError){
-        return new RegistrationResultDTO(null, registrationError);
+        return new RegistrationResultDTO(false, null, registrationError);
     }
 }
