@@ -1,6 +1,8 @@
 package org.example.controller;
 
+import org.example.dao.UserDao;
 import org.example.dto.RegistrationResultDTO;
+import org.example.model.User;
 import org.example.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,7 @@ public class SignUpController {
     RegistrationService registrationService;
 
     @Autowired
-    public SignUpController(RegistrationService registrationService) {
+    public SignUpController(RegistrationService registrationService, UserDao userDao) {
         this.registrationService = registrationService;
     }
 
@@ -37,12 +39,16 @@ public class SignUpController {
             model.addAttribute("error", "Invalid Password");
             return "sign-up";
         }
-
         RegistrationResultDTO registrationResultDTO = registrationService.register(login,password);
+        if(registrationResultDTO.getUser() == null){
+            model.addAttribute("error", registrationResultDTO.getRegistrationError().getMessage());
+            return "sign-up";
+        }
 
+        return "redirect:sign-in";
     }
     private boolean isValidLogin(String login){
-        return login != null && !login.isEmpty() && login.matches("^[A-Za-z0-9]{6,}$");
+        return login != null && !login.isEmpty();
     }
     private boolean isValidPassword(String password, String confirmPassword){
         return password != null && !password.isEmpty() &&  password.equals(confirmPassword);
