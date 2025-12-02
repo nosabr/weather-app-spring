@@ -42,15 +42,19 @@ public class SignInController {
         AuthResultDTO authResultDTO = authService.authenticate(login, password);
         if(authResultDTO.getUser() != null) {
             UserSession userSession = userSessionService.createUserSession(authResultDTO.getUser());
-            Cookie cookie = new Cookie("session_id", userSession.getId().toString());
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(60 * 60); // 1 hour
-            response.addCookie(cookie);
+            response.addCookie(createCookie("login", userSession.getUser().getLogin()));
+            response.addCookie(createCookie("session_id", userSession.getId().toString()));
             return "redirect:/";
         }
         model.addAttribute("error", authResultDTO.getAuthError().getMessage());
         return "sign-in";
     }
 
+    private Cookie createCookie(String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60 * 60); // 1 hour
+        return cookie;
+    }
 }

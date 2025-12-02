@@ -28,17 +28,17 @@
             </a>
 
             <!-- Информация о пользователе -->
-            <div class="navbar-user">
+            <div class="navbar-user" th:with="login=${#request.getCookie('login')?.value}">
                 <!-- Если пользователь залогинен -->
-                <th:block th:if="${session.isLoggedIn}">
+                <th:block th:if="${not #strings.isEmpty(login)}">
                     <span class="user-greeting me-3">
-                        Привет, <strong th:text="${session.username}">User</strong>!
+                        Привет, <strong th:text="${login}">User</strong>!
                     </span>
                     <a th:href="@{/sign-out}" class="btn btn-sm btn-outline-danger">Выход</a>
                 </th:block>
 
                 <!-- Если пользователь не залогинен -->
-                <th:block th:unless="${session.isLoggedIn}">
+                <th:block th:if="${#strings.isEmpty(login)}">
                     <a th:href="@{/sign-in}" class="btn btn-sm btn-primary">Вход</a>
                 </th:block>
             </div>
