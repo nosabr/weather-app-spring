@@ -20,8 +20,6 @@ public class AppConfig {
     @Autowired
     private Environment env;
 
-    // ========== DATA SOURCES ==========
-
     @Bean
     @Profile({"dev", "default"})
     public DataSource devDataSource() {
@@ -74,12 +72,6 @@ public class AppConfig {
         return dataSource;
     }
 
-    // ========== HIBERNATE SESSION FACTORY ==========
-
-    /**
-     * SessionFactory для DEV и PROD
-     * Зависит от Flyway - таблицы создаются через миграции
-     */
     @Bean(name = "sessionFactory")
     @Profile({"dev", "prod", "default"})
     @DependsOn("flyway")
@@ -91,10 +83,6 @@ public class AppConfig {
         return sf;
     }
 
-    /**
-     * SessionFactory для TEST
-     * Hibernate сам создает таблицы (create-drop)
-     */
     @Bean(name = "sessionFactory")
     @Profile("test")
     public LocalSessionFactoryBean sessionFactoryForTest(DataSource dataSource) {
@@ -123,16 +111,12 @@ public class AppConfig {
         return properties;
     }
 
-    // ========== TRANSACTION MANAGER ==========
-
     @Bean
     public HibernateTransactionManager transactionManager(LocalSessionFactoryBean sessionFactory) {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(sessionFactory.getObject());
         return transactionManager;
     }
-
-    // ========== FLYWAY ==========
 
     @Bean(initMethod = "migrate")
     @Profile({"dev", "prod", "default"})

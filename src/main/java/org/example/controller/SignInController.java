@@ -10,6 +10,7 @@ import org.example.model.User;
 import org.example.model.UserSession;
 import org.example.service.AuthService;
 import org.example.service.UserSessionService;
+import org.example.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,19 +43,12 @@ public class SignInController {
         AuthResultDTO authResultDTO = authService.authenticate(login, password);
         if(authResultDTO.isSuccess()) {
             UserSession userSession = userSessionService.createUserSession(authResultDTO.getUser());
-            response.addCookie(createCookie("login", userSession.getUser().getLogin()));
-            response.addCookie(createCookie("session_id", userSession.getId().toString()));
+            response.addCookie(CookieUtil.createCookie("login",userSession.getUser().getLogin()));
+            response.addCookie(CookieUtil.createCookie("session_id", userSession.getId().toString()));
             return "redirect:/";
         }
         model.addAttribute("error", authResultDTO.getAuthError().getMessage());
         return "sign-in";
     }
 
-    private Cookie createCookie(String name, String value) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(60 * 60); // 1 hour
-        return cookie;
-    }
 }
