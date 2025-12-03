@@ -1,0 +1,241 @@
+/* ==================== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ INDEX СТРАНИЦЫ ==================== */
+
+/* Поисковая секция */
+.search-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.search-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.search-form {
+    width: 100%;
+}
+
+.search-input {
+    border: 2px solid #e9ecef;
+    border-radius: 10px 0 0 10px !important;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.search-btn {
+    border-radius: 0 10px 10px 0 !important;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* Карточки погоды */
+.weather-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weather-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.weather-card-delete-form {
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+.weather-delete-btn {
+    background: rgba(220, 53, 69, 0.9);
+    border-radius: 50%;
+    padding: 6px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.weather-card:hover .weather-delete-btn {
+    opacity: 1;
+}
+
+.weather-delete-btn:hover {
+    background: #dc3545;
+    transform: scale(1.1);
+}
+
+.weather-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1rem;
+    height: 160px;
+    object-fit: contain;
+}
+
+.weather-temp {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.weather-location {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 0.75rem;
+}
+
+.weather-feels {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.weather-humidity {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state h4 {
+    margin-top: 1rem;
+    color: #6c757d;
+}
+
+.empty-state p {
+    color: #adb5bd;
+}
+
+/* Пагинация */
+.pagination-custom {
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.pagination-custom .page-item {
+    margin: 0;
+}
+
+.pagination-custom .page-link {
+    border: 1px solid #dee2e6;
+    color: #495057;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.pagination-custom .page-link:hover {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+    transform: translateY(-2px);
+}
+
+.pagination-custom .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.pagination-custom .page-item.disabled .page-link {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
+.pagination-custom .page-item.disabled .page-link:hover {
+    transform: none;
+}
+
+/* Информационный текст */
+.info-text {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-text strong {
+    color: #495057;
+    font-weight: 700;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .search-container {
+        padding: 1.5rem;
+    }
+
+    .search-title {
+        font-size: 1.5rem;
+    }
+
+    .search-input {
+        font-size: 0.95rem;
+        padding: 0.65rem 1rem;
+    }
+
+    .search-btn {
+        padding: 0.65rem 1.25rem;
+    }
+
+    .weather-temp {
+        font-size: 2rem;
+    }
+
+    .weather-location {
+        font-size: 1.1rem;
+    }
+
+    .weather-icon {
+        height: 140px;
+    }
+
+    .navbar-user {
+        position: static;
+        margin-top: 0.75rem;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .search-btn span {
+        display: none;
+    }
+
+    .pagination-custom .page-link {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.875rem;
+    }
+}
