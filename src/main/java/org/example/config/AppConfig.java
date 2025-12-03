@@ -15,6 +15,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:database.properties")
+@PropertySource("classpath:application.properties")
 public class AppConfig {
 
     @Autowired

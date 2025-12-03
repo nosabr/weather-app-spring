@@ -4,6 +4,7 @@ import org.example.dao.UserSessionDao;
 import org.example.model.User;
 import org.example.model.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -13,7 +14,9 @@ import java.util.UUID;
 @Service
 public class UserSessionService {
     private final UserSessionDao userSessionDao;
-    private static final long SESSION_DURATION_HOURS = 1;
+
+    @Value("${session.duration.seconds:3600}") // 1 HOUR
+    private long SESSION_DURATION_SECONDS;
 
     @Autowired
     public UserSessionService(UserSessionDao userSessionDao) {
@@ -21,12 +24,17 @@ public class UserSessionService {
     }
 
     public User getUserBySessionId(UUID sessionId) {
-        Optional<UserSession> session = userSessionDao.findById(sessionId);
-        return session.map(UserSession::getUser).orElse(null);
+        try{
+            Optional<UserSession> session = userSessionDao.findById(sessionId);
+            return session.map(UserSession::getUser).orElse(null);
+        }
+        catch (IllegalArgumentException | NullPointerException e){
+            return null;
+        }
     }
 
     public UserSession createUserSession(User user) {
-        Instant expiresAt = Instant.now().plusSeconds(SESSION_DURATION_HOURS * 3600);
+        Instant expiresAt = Instant.now().plusSeconds(SESSION_DURATION_SECONDS);
         UserSession userSession = userSessionDao.save(new UserSession(user, expiresAt));
         System.out.println("[UserSessionService] UserSession created]");
         return userSession;
@@ -36,7 +44,7 @@ public class UserSessionService {
         try {
             UUID uuid = UUID.fromString(sessionId);
             userSessionDao.findById(uuid).ifPresent(userSessionDao::delete);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             System.err.println("Invalid session ID: " + sessionId);
         }
     }
