@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.dao.UserSessionDao;
 import org.example.model.User;
 import org.example.service.UserSessionService;
+import org.example.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,10 +16,12 @@ import java.util.UUID;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
     private final UserSessionService userSessionService;
+    private final HttpServletResponse httpServletResponse;
 
     @Autowired
-    public AuthInterceptor(UserSessionService userSessionService, UserSessionDao userSessionDao) {
+    public AuthInterceptor(UserSessionService userSessionService, UserSessionDao userSessionDao, HttpServletResponse httpServletResponse) {
         this.userSessionService = userSessionService;
+        this.httpServletResponse = httpServletResponse;
     }
 
     @Override
@@ -34,6 +37,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         User user = getCurrentUser(request);
         if (user == null) {
             System.out.println("[AuthInterceptor] User is null, redirect to login page");
+            response.addCookie(CookieUtil.deleteCookie("session_id"));
+            response.addCookie(CookieUtil.deleteCookie("login"));
             response.sendRedirect(request.getContextPath() + "/sign-in");
             return false;
         }
@@ -59,6 +64,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                         System.out.println("[AuthInterceptor] User is already logged in");
                     } else {
                         System.out.println("[AuthInterceptor] User is not logged in");
+
                     }
                     return user;
                 } catch (IllegalArgumentException e) {
