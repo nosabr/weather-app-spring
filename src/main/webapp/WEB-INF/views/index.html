@@ -3,7 +3,7 @@
 <head th:replace="~{fragments/common :: head('Главная')}"></head>
 
 <!-- Дополнительные стили для index страницы -->
-<link rel="stylesheet" th:href="@{/static/css/index-styles.css}">
+<link rel="stylesheet" th:href="@{/static/css/index-style.css}">
 
 <body>
 
@@ -14,7 +14,7 @@
     <div class="row justify-content-center mb-5">
         <div class="col-lg-8 col-md-10">
             <div class="search-container">
-                <h1 class="text-center search-title">Поиск погоды по городам</h1>
+                <h1 class="text-center mb-4 search-title">Поиск погоды по городам</h1>
                 <form th:action="@{/search}" method="get" class="search-form">
                     <div class="input-group input-group-lg shadow-sm">
                         <input type="text"
@@ -38,7 +38,7 @@
     <!-- Info Text -->
     <div class="row" th:if="${totalLocations != null and totalLocations > 0}">
         <div class="col-12">
-            <p class="info-text">
+            <p class="text-center text-muted mb-4">
                 Всего локаций: <strong th:text="${totalLocations}">0</strong>
             </p>
         </div>
