@@ -32,4 +32,12 @@ public class UserSessionService {
         return userSession;
     }
 
+    public void deleteUserSession(String sessionId) {
+        try {
+            UUID uuid = UUID.fromString(sessionId);
+            userSessionDao.findById(uuid).ifPresent(userSessionDao::delete);
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid session ID: " + sessionId);
+        }
+    }
 }

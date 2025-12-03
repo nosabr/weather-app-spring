@@ -23,4 +23,13 @@ public class CookieUtil {
         return cookie;
     }
 
+    public static Cookie deleteCookie(String name) {
+        Cookie cookie = new Cookie(name, null);
+        cookie.setPath(PATH);
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(HTTP_ONLY);
+        return cookie;
+    }
+
+
 }
