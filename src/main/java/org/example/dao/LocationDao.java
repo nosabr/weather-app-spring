@@ -49,8 +49,11 @@ public class LocationDao {
         Query<Long> query = getCurrentSession().createQuery(
                 "select count(l) from Location l " +
                         "where l.user.id=:userId AND l.latitude = :latitude " +
-                        "AND l.longitude = longitude" ,Long.class);
-        return query.uniqueResult() > 1;
+                        "AND l.longitude = :longitude" ,Long.class);
+        query.setParameter("userId", userId);
+        query.setParameter("latitude", latitude);
+        query.setParameter("longitude", longitude);
+        return query.uniqueResult() > 0;
     }
 
     public void delete(Location location) {

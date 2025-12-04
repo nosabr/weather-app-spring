@@ -2,7 +2,10 @@ package org.example.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.example.dao.UserDao;
 import org.example.dto.WeatherResponseDTO;
+import org.example.model.User;
+import org.example.service.LocationService;
 import org.example.service.WeatherService;
 import org.example.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +15,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 @Controller
 public class SearchController {
+    private final LocationService locationService;
+    private final UserDao userDao;
     WeatherService weatherService;
 
     @Autowired
-    public SearchController(WeatherService weatherService) {
+    public SearchController(WeatherService weatherService, LocationService locationService, UserDao userDao) {
         this.weatherService = weatherService;
+        this.locationService = locationService;
+        this.userDao = userDao;
     }
 
     @GetMapping("/search")
@@ -37,25 +47,30 @@ public class SearchController {
             model.addAttribute("error", "Город не найден");
             return "search-results";
         }
-        if(isCityAlreadyAdded(weatherResponseDTO, CookieUtil.getLoginFromCookie(request.getCookies()))){
+
+        String login = CookieUtil.getLoginFromCookie(request.getCookies());
+        BigDecimal latitude = weatherResponseDTO.getLatitude();
+        BigDecimal longitude = weatherResponseDTO.getLongitude();
+
+        if(locationService.isCityAlreadyAdded(login, latitude, longitude)){
             model.addAttribute("isAlreadyAdded",true);
-            return "search-results";
         }
         model.addAttribute("weatherResponseDTO", weatherResponseDTO);
         return "search-results";
     }
 
-    private boolean isCityAlreadyAdded(WeatherResponseDTO weatherResponseDTO, String login) {
-        return weatherService.isCityAlreadyAdded(login, weatherResponseDTO.getLatitude(),
-                weatherResponseDTO.getLongitude());
-    }
-
     @PostMapping("/search")
-    public String addLocation(@RequestParam(value = "name", required = true) String name,
-                              @RequestParam(value = "latitude", required = true) String latitude,
-                              @RequestParam(value = "longitude", required = true) String longitude,
-                              Model model) {
-
-        return "redirect:/search-results"; // сделать типа обратно на ту же страницу переводит
+    public String addLocation(@RequestParam(value = "cityName", required = true) String cityName,
+                              Model model,
+                              HttpServletRequest request) {
+        String login = CookieUtil.getLoginFromCookie(request.getCookies());
+        boolean success = locationService.addLocationByLoginAndCityName(login,cityName);
+        if(success){
+            model.addAttribute("success", "Город успешно добавлен!");
+            model.addAttribute("isAlreadyAdded", true);
+            return "redirect:/search?cityName=" + cityName;
+        }
+        model.addAttribute("error", "Ошибка добавления города");
+        return "redirect:/search"; //
     }
 }

@@ -123,12 +123,7 @@
                                     </div>
                                 </div>
 
-                                <form th:action="@{/search}" method="post" class="mt-4">
-                                    <!-- Только необходимые данные -->
-                                    <input type="hidden" name="name" th:value="${weatherData.name}">
-                                    <input type="hidden" name="latitude" th:value="${weatherData.latitude}">
-                                    <input type="hidden" name="longitude" th:value="${weatherData.longitude}">
-
+                                <form th:action="@{/search(cityName=${cityName})}" method="post">
                                     <!-- Если город уже добавлен -->
                                     <button type="button"
                                             class="btn btn-info btn-already-added"

@@ -51,15 +51,6 @@ public class WeatherService {
 
     }
 
-    public boolean isCityAlreadyAdded(String login,BigDecimal latitude, BigDecimal longitude){
-        Optional<User> userOpt =  userDao.findByLogin(login);
-        if(userOpt.isPresent()){
-            User user = userOpt.get();
-            return locationDao.isLocationAlreadyAdded(user.getId(), latitude, longitude);
-        }
-        return false;
-    }
-
     @SuppressWarnings("unchecked")
     private WeatherResponseDTO parseWeatherResponse(Map<String, Object> response) {
         WeatherResponseDTO weatherData = new WeatherResponseDTO();
