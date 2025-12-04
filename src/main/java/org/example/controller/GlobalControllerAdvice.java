@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.controller;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.CookieValue;
