@@ -75,8 +75,8 @@
     </div>
 
     <!-- Search Result -->
-    <!--/*@thymesVar id="weatherData" type="com.example.weatherapp.dto.WeatherData"*/-->
-    <div class="row justify-content-center" th:if="${weatherData != null}">
+    <!--/*@thymesVar id="weatherResponseDTO" type="com.example.weatherapp.dto.WeatherData"*/-->
+    <div class="row justify-content-center" th:if="${weatherResponseDTO != null}">
         <div class="col-lg-8 col-md-10">
             <div class="result-card">
                 <div class="result-header">
@@ -87,7 +87,7 @@
                     <div class="row align-items-center">
                         <!-- Weather Icon -->
                         <div class="col-md-4 text-center">
-                            <img th:src="@{'https://openweathermap.org/img/wn/' + ${weatherData.icon} + '@4x.png'}"
+                            <img th:src="@{'https://openweathermap.org/img/wn/' + ${weatherResponseDTO.icon} + '@4x.png'}"
                                  alt="Weather icon"
                                  class="weather-result-icon">
                         </div>
@@ -95,15 +95,15 @@
                         <!-- Weather Info -->
                         <div class="col-md-8">
                             <div class="weather-info">
-                                <h3 class="city-name" th:text="${weatherData.name} + ', ' + ${weatherData.country}">
+                                <h3 class="city-name" th:text="${weatherResponseDTO.name} + ', ' + ${weatherResponseDTO.country}">
                                     London, GB
                                 </h3>
 
-                                <div class="temperature" th:text="${weatherData.temperature} + '°C'">
+                                <div class="temperature" th:text="${weatherResponseDTO.temperature} + '°C'">
                                     15°C
                                 </div>
 
-                                <p class="description" th:text="${weatherData.description}">
+                                <p class="description" th:text="${weatherResponseDTO.description}">
                                     Clear sky
                                 </p>
 
@@ -112,20 +112,20 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M13.5 0a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V7.5h-1.5a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V15h-1.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5V.5a.5.5 0 0 0-.5-.5h-2zM7 1.5l.364-.343a.5.5 0 0 0-.728 0l-.002.002-.006.007-.022.023-.08.088a28.458 28.458 0 0 0-1.274 1.517c-.769.983-1.714 2.325-2.385 3.727C2.368 7.564 2 8.682 2 9.733 2 12.614 4.212 15 7 15s5-2.386 5-5.267c0-1.05-.368-2.169-.867-3.212-.671-1.402-1.616-2.744-2.385-3.727a28.458 28.458 0 0 0-1.354-1.605l-.022-.023-.006-.007-.002-.001L7 1.5zm0 0-.364-.343L7 1.5zm-.016.766L7 2.247l.016.019c.24.274.572.667.944 1.144.611.781 1.32 1.776 1.901 2.827H4.14c.58-1.051 1.29-2.046 1.9-2.827.373-.477.706-.87.945-1.144zM3 9.733c0-.755.244-1.612.638-2.496h6.724c.395.884.638 1.741.638 2.496C11 12.117 9.182 14 7 14s-4-1.883-4-4.267z"/>
                                         </svg>
-                                        <span>Ощущается как <strong th:text="${weatherData.feelsLike} + '°C'">12°C</strong></span>
+                                        <span>Ощущается как <strong th:text="${weatherResponseDTO.feelsLike} + '°C'">12°C</strong></span>
                                     </div>
 
                                     <div class="detail-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M13.5 0a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V7.5h-1.5a.5.5 0 0 0 0 1H15v2.75h-.5a.5.5 0 0 0 0 1h.5V15h-1.5a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5V.5a.5.5 0 0 0-.5-.5h-2zM7 1.5l.364-.343a.5.5 0 0 0-.728 0l-.002.002-.006.007-.022.023-.08.088a28.458 28.458 0 0 0-1.274 1.517c-.769.983-1.714 2.325-2.385 3.727C2.368 7.564 2 8.682 2 9.733 2 12.614 4.212 15 7 15s5-2.386 5-5.267c0-1.05-.368-2.169-.867-3.212-.671-1.402-1.616-2.744-2.385-3.727a28.458 28.458 0 0 0-1.354-1.605l-.022-.023-.006-.007-.002-.001L7 1.5zm0 0-.364-.343L7 1.5zm-.016.766L7 2.247l.016.019c.24.274.572.667.944 1.144.611.781 1.32 1.776 1.901 2.827H4.14c.58-1.051 1.29-2.046 1.9-2.827.373-.477.706-.87.945-1.144zM3 9.733c0-.755.244-1.612.638-2.496h6.724c.395.884.638 1.741.638 2.496C11 12.117 9.182 14 7 14s-4-1.883-4-4.267z"/>
                                         </svg>
-                                        <span>Влажность <strong th:text="${weatherData.humidity} + '%'">70%</strong></span>
+                                        <span>Влажность <strong th:text="${weatherResponseDTO.humidity} + '%'">70%</strong></span>
                                     </div>
                                 </div>
 
                                 <!-- Add Location Button -->
                                 <form th:action="@{/locations/add}" method="post" class="mt-4">
-                                    <input type="hidden" name="cityName" th:value="${weatherData.name}">
+                                    <input type="hidden" name="cityName" th:value="${weatherResponseDTO.name}">
                                     <button type="submit" class="btn btn-success btn-add-location">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -142,7 +142,7 @@
     </div>
 
     <!-- No Results State -->
-    <div class="row justify-content-center" th:if="${cityName != null and weatherData == null and error == null}">
+    <div class="row justify-content-center" th:if="${cityName != null and weatherResponseDTO == null and error == null}">
         <div class="col-lg-8 col-md-10">
             <div class="empty-search-state text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="text-muted mb-3" viewBox="0 0 16 16">
