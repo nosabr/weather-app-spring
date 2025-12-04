@@ -31,5 +31,27 @@ public class CookieUtil {
         return cookie;
     }
 
+    public static UUID getUuidFromCookie(Cookie[] cookies) {
+        for(Cookie cookie : cookies) {
+            if (cookie.getName().equals("session_id")) {
+                try {
+                    return UUID.fromString(cookie.getValue());
+                } catch (IllegalArgumentException e) {
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getLoginFromCookie(Cookie[] cookies) {
+        for(Cookie cookie : cookies) {
+            if (cookie.getName().equals("login")) {
+                return cookie.getValue();
+            }
+        }
+        return null;
+    }
+
 
 }

@@ -1,21 +1,35 @@
 package org.example.service;
 
+import org.example.dao.LocationDao;
+import org.example.dao.UserDao;
+import org.example.dao.UserSessionDao;
 import org.example.dto.WeatherResponseDTO;
+import org.example.model.Location;
+import org.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class WeatherService {
     private final RestTemplate restTemplate;
+    private final LocationDao locationDao;
+    private final UserSessionService userSessionService;
+    private final UserDao userDao;
 
     @Autowired
-    public WeatherService(RestTemplate restTemplate) {
+    public WeatherService(RestTemplate restTemplate, LocationDao locationDao, UserSessionService userSessionService, UserDao userDao) {
         this.restTemplate = restTemplate;
+        this.locationDao = locationDao;
+        this.userSessionService = userSessionService;
+        this.userDao = userDao;
     }
 
     @Value("${openweather.api.key}")
@@ -37,6 +51,15 @@ public class WeatherService {
 
     }
 
+    public boolean isCityAlreadyAdded(String login,BigDecimal latitude, BigDecimal longitude){
+        Optional<User> userOpt =  userDao.findByLogin(login);
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            return locationDao.isLocationAlreadyAdded(user.getId(), latitude, longitude);
+        }
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
     private WeatherResponseDTO parseWeatherResponse(Map<String, Object> response) {
         WeatherResponseDTO weatherData = new WeatherResponseDTO();
@@ -47,6 +70,11 @@ public class WeatherService {
         // Код страны
         Map<String, Object> sys = (Map<String, Object>) response.get("sys");
         weatherData.setCountry((String) sys.get("country"));
+
+        // Координаты
+        Map<String, Object> coord = (Map<String, Object>) response.get("coord");
+        weatherData.setLatitude(BigDecimal.valueOf(((Number) coord.get("lat")).doubleValue()));
+        weatherData.setLongitude(BigDecimal.valueOf(((Number) coord.get("lon")).doubleValue()));
 
         // Данные о погоде (температура, влажность и т.д.)
         Map<String, Object> main = (Map<String, Object>) response.get("main");
