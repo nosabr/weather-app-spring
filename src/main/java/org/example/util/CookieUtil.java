@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Component
 public class CookieUtil {
-    private final static boolean HTTP_ONLY = false;
+    private final static boolean HTTP_ONLY = true;
     private final static String PATH = "/";
     private final static int MAX_AGE = 60 * 60; // 1 hour
 
