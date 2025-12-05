@@ -1,10 +1,6 @@
 package org.example.util;
 
 import jakarta.servlet.http.Cookie;
-import org.example.model.User;
-import org.example.model.UserSession;
-import org.example.service.UserSessionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
