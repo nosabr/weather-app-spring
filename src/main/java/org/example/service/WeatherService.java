@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+
 @Service
 public class WeatherService {
 
@@ -32,6 +34,20 @@ public class WeatherService {
             return null;
         } catch (Exception e) {
             System.out.println("Error getting weather for city: " + cityName);
+            return null;
+        }
+    }
+
+    public WeatherResponseDTO getWeatherByCoordinates(BigDecimal latitude, BigDecimal longitude) {
+        String url = String.format("%s?lat=%s&lon=%s&appid=%s&units=metric&lang=ru",
+                API_URL, latitude, longitude, API_KEY);
+        try {
+            return restTemplate.getForObject(url, WeatherResponseDTO.class);
+        } catch (HttpClientErrorException.NotFound e) {
+            System.out.println("Weather not found for coordinates: " + latitude + ", " + longitude);
+            return null;
+        } catch (Exception e) {
+            System.out.println("Error getting weather for coordinates: " + latitude + ", " + longitude);
             return null;
         }
     }

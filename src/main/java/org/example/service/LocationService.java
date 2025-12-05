@@ -7,11 +7,15 @@ import org.example.dto.LocationError;
 import org.example.dto.WeatherResponseDTO;
 import org.example.model.Location;
 import org.example.model.User;
+import org.flywaydb.core.internal.util.Locations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,5 +78,26 @@ public class LocationService {
     public void deleteLocationByCoords(String login, BigDecimal latitude, BigDecimal longitude, String name) {
         Optional<User> userOpt = userDao.findByLogin(login);
         userOpt.ifPresent(user -> locationDao.deleteByUserAndCoords(user.getId(), latitude, longitude));
+    }
+
+    public List<WeatherResponseDTO> getAllLocationsByLogin(String login) {
+        Optional<User> userOpt = userDao.findByLogin(login);
+        if(userOpt.isEmpty()) {
+            return Collections.emptyList();
+        }
+        User user = userOpt.get();
+
+        List<Location> locations = locationDao.findAllLocationsById(user.getId());
+
+        List<WeatherResponseDTO> weatherResponseDTOList = new ArrayList<>();
+
+        for(Location location : locations){
+            WeatherResponseDTO weatherResponseDTO = weatherService.
+                    getWeatherByCoordinates(location.getLatitude(), location.getLongitude());
+            if(weatherResponseDTO != null){
+                weatherResponseDTOList.add(weatherResponseDTO);
+            }
+        }
+        return weatherResponseDTOList;
     }
 }
