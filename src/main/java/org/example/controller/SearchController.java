@@ -71,7 +71,8 @@ public class SearchController {
         LocationAddResultDTO locationAddResultDTO = locationService.addLocationByLoginAndCityName(login,cityName);
         if(locationAddResultDTO.isSuccess()){
             redirectAttributes.addFlashAttribute("success", "Город успешно добавлен!");
-            return "redirect:/search?cityName=" + cityName;
+            redirectAttributes.addAttribute("cityName", cityName);
+            return "redirect:/search";
         }
         redirectAttributes.addFlashAttribute("error", locationAddResultDTO.getError());
         return "redirect:/search"; //
@@ -80,9 +81,20 @@ public class SearchController {
 
     @PostMapping("/search/delete")
     public String deleteLocation(@RequestParam(value = "cityName", required = true) String cityName,
+                                 @RequestParam(value = "name", required = true) String name,
+                                 @RequestParam(value = "latitude", required = true) BigDecimal latitude,
+                                 @RequestParam(value = "longitude", required = true) BigDecimal longitude,
+                                 RedirectAttributes redirectAttributes,
                                  HttpServletRequest request) {
-        String login = CookieUtil.getLoginFromCookie(request.getCookies());
 
-        return "redirect:/search?cityName=" + cityName;
+        try{
+            String login = CookieUtil.getLoginFromCookie(request.getCookies());
+            locationService.deleteLocationByCoords(login, latitude, longitude, name);
+            redirectAttributes.addFlashAttribute("success","Город успешно удален");
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("error",e.getMessage());
+        }
+        redirectAttributes.addAttribute("cityName", cityName);
+        return "redirect:/search";
     }
 }

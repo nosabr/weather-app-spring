@@ -69,4 +69,10 @@ public class LocationService {
         }
         return false;
     }
+
+    @Transactional
+    public void deleteLocationByCoords(String login, BigDecimal latitude, BigDecimal longitude, String name) {
+        Optional<User> userOpt = userDao.findByLogin(login);
+        userOpt.ifPresent(user -> locationDao.deleteByUserAndCoords(user.getId(), latitude, longitude));
+    }
 }

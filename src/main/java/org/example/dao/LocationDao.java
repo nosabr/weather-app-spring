@@ -59,4 +59,15 @@ public class LocationDao {
     public void delete(Location location) {
         getCurrentSession().remove(location);
     }
+
+    public void deleteByUserAndCoords(Long userId, BigDecimal latitude, BigDecimal longitude) {
+        MutationQuery query = getCurrentSession().createMutationQuery(
+                "DELETE FROM Location WHERE user.id = :userId " +
+                        "AND latitude = :lat AND longitude = :lon"
+        );
+        query.setParameter("userId", userId);
+        query.setParameter("lat", latitude);
+        query.setParameter("lon", longitude);
+        query.executeUpdate();
+    }
 }
