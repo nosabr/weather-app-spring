@@ -34,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             System.out.println("[AuthInterceptor] URL is public");
             return true;
         }
-        User user = getCurrentUser(request);
+        User user = checkCurrentUser(request);
         if (user == null) {
             System.out.println("[AuthInterceptor] User is null, redirect to login page");
             response.addCookie(CookieUtil.deleteCookie("session_id"));
@@ -48,32 +48,20 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private User getCurrentUser(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
+    private User checkCurrentUser(HttpServletRequest request) {
+        if (request.getCookies() == null) {
             System.out.println("[AuthInterceptor] Cookies is null");
             return null;
         }
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("session_id")) {
-                try {
-                    UUID sessionId = UUID.fromString(cookie.getValue());
-                    System.out.println("[AuthInterceptor] Cookie.getValue(): " + sessionId.toString());
-                    User user = userSessionService.getUserBySessionId(sessionId);
-                    if (user != null) {
-                        System.out.println("[AuthInterceptor] User is already logged in");
-                    } else {
-                        System.out.println("[AuthInterceptor] User is not logged in");
 
-                    }
-                    return user;
-                } catch (IllegalArgumentException e) {
-                    System.out.println("[AuthInterceptor] Invalid session id");
-                    return null;
-                }
-            }
-        }
-        return null;
+        String login = CookieUtil.getLoginFromCookie(request.getCookies());
+        UUID uuid = CookieUtil.getUuidFromCookie(request.getCookies());
+        if(login == null || uuid == null) return null;
+
+        User user = userSessionService.getUserBySessionId(uuid);
+        if(user == null || !user.getLogin().equals(login)) return null;
+
+        return user;
     }
 
     private boolean isUrlPublic(String path) {

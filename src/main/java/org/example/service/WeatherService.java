@@ -2,10 +2,7 @@ package org.example.service;
 
 import org.example.dao.LocationDao;
 import org.example.dao.UserDao;
-import org.example.dao.UserSessionDao;
 import org.example.dto.WeatherResponseDTO;
-import org.example.model.Location;
-import org.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,8 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+
 
 @Service
 public class WeatherService {

@@ -3,6 +3,7 @@ package org.example.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.dao.UserDao;
+import org.example.dto.LocationAddResultDTO;
 import org.example.dto.WeatherResponseDTO;
 import org.example.model.User;
 import org.example.service.LocationService;
@@ -66,17 +67,22 @@ public class SearchController {
                               HttpServletRequest request,
                               RedirectAttributes redirectAttributes) {
         String login = CookieUtil.getLoginFromCookie(request.getCookies());
-        boolean success = locationService.addLocationByLoginAndCityName(login,cityName);
-        if(success){
+
+        LocationAddResultDTO locationAddResultDTO = locationService.addLocationByLoginAndCityName(login,cityName);
+        if(locationAddResultDTO.isSuccess()){
             redirectAttributes.addFlashAttribute("success", "Город успешно добавлен!");
             return "redirect:/search?cityName=" + cityName;
         }
-        redirectAttributes.addFlashAttribute("error", "Ошибка добавления города");
+        redirectAttributes.addFlashAttribute("error", locationAddResultDTO.getError());
         return "redirect:/search"; //
     }
 
+
     @PostMapping("/search/delete")
-    public String deleteLocation(@RequestParam(value = "cityName", required = true) String cityName){
+    public String deleteLocation(@RequestParam(value = "cityName", required = true) String cityName,
+                                 HttpServletRequest request) {
+        String login = CookieUtil.getLoginFromCookie(request.getCookies());
+
         return "redirect:/search?cityName=" + cityName;
     }
 }

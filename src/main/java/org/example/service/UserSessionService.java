@@ -6,6 +6,7 @@ import org.example.model.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class UserSessionService {
             return null;
         }
     }
-
+    @Transactional
     public UserSession createUserSession(User user) {
         Instant expiresAt = Instant.now().plusSeconds(SESSION_DURATION_SECONDS);
         UserSession userSession = userSessionDao.save(new UserSession(user, expiresAt));

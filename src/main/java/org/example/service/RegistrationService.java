@@ -8,6 +8,7 @@ import org.example.model.User;
 import org.example.util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RegistrationService {
@@ -24,6 +25,7 @@ public class RegistrationService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public RegistrationResultDTO register(String login, String password) {
         if(!isLoginValid(login)) {
             System.out.println("[RegisterService] Invalid Login");
