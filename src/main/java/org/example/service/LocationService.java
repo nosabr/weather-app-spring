@@ -17,6 +17,8 @@ public class LocationService {
     private final UserDao userDao;
     LocationDao locationDao;
 
+    private final static int MAX_LOCATIONS = 4;
+
     @Autowired
     public LocationService(LocationDao locationDao, WeatherService weatherService, UserDao userDao) {
         this.locationDao = locationDao;
@@ -50,6 +52,15 @@ public class LocationService {
         if(userOpt.isPresent()){
             User user = userOpt.get();
             return locationDao.isLocationAlreadyAdded(user.getId(), latitude, longitude);
+        }
+        return false;
+    }
+
+    public boolean isMaxLocationsReached(String login) {
+        Optional<User> userOpt =  userDao.findByLogin(login);
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            return MAX_LOCATIONS <= locationDao.findAllLocationsById(user.getId()).size();
         }
         return false;
     }

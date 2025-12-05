@@ -35,15 +35,6 @@
         </div>
     </div>
 
-    <!-- Info Text -->
-    <div class="row" th:if="${totalLocations != null and totalLocations > 0}">
-        <div class="col-12">
-            <p class="text-center text-muted mb-4">
-                Всего локаций: <strong th:text="${totalLocations}">0</strong>
-            </p>
-        </div>
-    </div>
-
     <!-- Weather Cards Grid -->
     <div class="row g-4 mb-5">
         <!--/*@thymesVar id="locations" type="java.util.List"*/-->
@@ -73,6 +64,12 @@
                     <p class="card-text mb-1 weather-humidity">
                         Humidity: <span th:text="${location.humidity}">70</span>%
                     </p>
+                    <p class="card-text mb-1 weather-coordinates">
+                        Latitude: <span th:text="${location.latitude}">41.69</span>°
+                    </p>
+                    <p class="card-text mb-0 weather-coordinates">
+                        Longitude: <span th:text="${location.longitude}">44.83</span>°
+                    </p>
                 </div>
             </div>
         </div>
@@ -87,50 +84,6 @@
                 <h4 class="text-muted">Нет сохраненных локаций</h4>
                 <p class="text-muted">Воспользуйтесь поиском выше, чтобы добавить города</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Pagination -->
-    <!--/*@thymesVar id="currentPage" type="java.lang.Integer"*/-->
-    <!--/*@thymesVar id="totalPages" type="java.lang.Integer"*/-->
-    <div class="row" th:if="${totalPages != null and totalPages > 1}">
-        <div class="col-12">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center pagination-custom">
-                    <!-- Previous Button -->
-                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                        <a class="page-link"
-                           th:href="@{/(page=${currentPage - 1})}"
-                           aria-label="Previous"
-                           th:if="${currentPage > 1}">
-                            <span aria-hidden="true">&laquo; Назад</span>
-                        </a>
-                        <span class="page-link" th:if="${currentPage == 1}">
-                            <span aria-hidden="true">&laquo; Назад</span>
-                        </span>
-                    </li>
-
-                    <!-- Page Numbers -->
-                    <li class="page-item"
-                        th:each="i : ${#numbers.sequence(1, totalPages)}"
-                        th:classappend="${i == currentPage} ? 'active'">
-                        <a class="page-link" th:href="@{/(page=${i})}" th:text="${i}">1</a>
-                    </li>
-
-                    <!-- Next Button -->
-                    <li class="page-item" th:classappend="${currentPage >= totalPages} ? 'disabled'">
-                        <a class="page-link"
-                           th:href="@{/(page=${currentPage + 1})}"
-                           aria-label="Next"
-                           th:if="${currentPage < totalPages}">
-                            <span aria-hidden="true">Вперёд &raquo;</span>
-                        </a>
-                        <span class="page-link" th:if="${currentPage >= totalPages}">
-                            <span aria-hidden="true">Вперёд &raquo;</span>
-                        </span>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 </main>
